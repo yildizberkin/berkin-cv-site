@@ -6,88 +6,129 @@
   <title>Berkin Yıldız — IT Infrastructure & Network</title>
   <meta name="description" content="IT Infrastructure & Network Specialist. Azure, Windows Server, Linux, Network & Security." />
 
-  <!-- Tailwind (CDN; hız için sonra build’e geçebiliriz) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Retro başlık için font + gövde için Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- Basit accent renk ayarı -->
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { accent: "#1E40FF" }
+          fontFamily: { display: ['Audiowide', 'system-ui'], sans: ['Inter', 'system-ui'] },
+          colors: {
+            neon: '#00FFD1',
+            magenta: '#FF2EA6',
+            purple: '#7C3AED',
+            midnight: '#090314'
+          },
+          dropShadow: {
+            neon: '0 0 8px #00ffd1, 0 0 18px #00ffd1',
+            pink: '0 0 8px #ff2ea6, 0 0 18px #ff2ea6'
+          },
+          boxShadow: {
+            glass: '0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08)'
+          },
+          backgroundImage: {
+            'synth-gradient': 'radial-gradient(1200px 700px at 80% -20%, #ff2ea622 0%, transparent 60%), radial-gradient(1000px 600px at -10% 120%, #00ffd122 0%, transparent 60%), linear-gradient(180deg, #0b0616 0%, #090314 60%, #06020d 100%)',
+            'grid': 'linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px)'
+          }
         }
       }
     }
   </script>
+
+  <style>
+    /* yavaş akan synthwave ışık animasyonu */
+    @keyframes glowMove {
+      0% { opacity: .55; transform: translateY(0); }
+      50% { opacity: .9;  transform: translateY(-6px); }
+      100%{ opacity: .55; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 antialiased">
+<body class="bg-midnight text-zinc-100 antialiased font-sans">
+
+  <!-- arka plan: synth gradient + grid -->
+  <div class="fixed inset-0 -z-10">
+    <div class="absolute inset-0 bg-synth-gradient"></div>
+    <div class="absolute inset-0 bg-grid bg-[size:36px_36px] opacity-[.20]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#ffffff0a_0,transparent_60%)]"></div>
+  </div>
+
   <!-- Header -->
   <header class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
-    <a href="#" class="font-semibold tracking-tight text-zinc-200">Berkin Yıldız</a>
+    <a href="#" class="font-semibold tracking-tight text-zinc-200 hover:text-white transition">
+      Berkin Yıldız
+    </a>
 
-    <!-- Dil seçici (bir sonraki adımda i18n bağlayacağız) -->
+    <!-- Dil seçici (i18n sonraki adımda) -->
     <div class="flex items-center gap-2 text-sm">
-      <button id="btn-tr" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700">TR</button>
-      <button id="btn-en" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700">EN</button>
+      <button id="btn-tr" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10">TR</button>
+      <button id="btn-en" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10">EN</button>
     </div>
   </header>
 
   <!-- Hero -->
-  <main class="max-w-6xl mx-auto px-4 pt-14 pb-20">
+  <main class="max-w-6xl mx-auto px-4 pt-10 pb-20">
     <section class="grid md:grid-cols-2 items-center gap-10">
       <div>
-        <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
-          <span id="hero-title">IT Infrastructure & Network Specialist</span>
+        <h1 class="font-display text-4xl md:text-6xl leading-tight tracking-wide">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon via-magenta to-purple drop-shadow-neon">
+            IT Infrastructure & Network Specialist
+          </span>
         </h1>
-        <p id="hero-tag" class="mt-4 text-zinc-400 max-w-prose">
-          Azure, Windows Server, Linux, ağ ve güvenlik alanlarında çalışıyorum. Sistemleri sade, güvenli ve
-          sürdürülebilir kılmaya odaklanıyorum.
+
+        <p class="mt-4 text-zinc-300/90 max-w-prose">
+          Azure, Windows Server, Linux ve ağ güvenliği üzerine çalışıyorum. Sistemleri <span class="text-neon drop-shadow-neon">güvenli</span>,
+          <span class="text-magenta drop-shadow-pink">ölçeklenebilir</span> ve sürdürülebilir kılmaya odaklanıyorum.
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
-          <!-- CV’yi görüntüle -->
-          <a id="btn-view-cv"
-             href="/assets/cv/berkin-yildiz-cv.pdf"
-             target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent text-white hover:opacity-90">
-             CV’yi Görüntüle
+          <!-- CV görüntüle -->
+          <a href="/assets/cv/berkin-yildiz-cv.pdf" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 backdrop-blur border border-white/15 shadow-glass hover:bg-white/15 transition">
+             <span class="text-neon drop-shadow-neon">CV’yi Görüntüle</span>
           </a>
-
-          <!-- PDF indir -->
-          <a id="btn-download-cv"
-             href="/assets/cv/berkin-yildiz-cv.pdf" download
-             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700">
-             PDF İndir
+          <!-- İndir -->
+          <a href="/assets/cv/berkin-yildiz-cv.pdf" download
+             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
+             <span class="text-magenta drop-shadow-pink">PDF İndir</span>
           </a>
         </div>
       </div>
 
-      <!-- Sağ tarafta basit bir kart -->
-      <div class="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6">
-        <ul class="space-y-3 text-zinc-300">
+      <!-- Sağ kart: cam efekti + bulletlar -->
+      <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 shadow-glass animate-[glowMove_6s_ease-in-out_infinite]">
+        <p class="uppercase tracking-widest text-xs text-zinc-300/70 mb-3">Core Stack</p>
+        <ul class="space-y-3 text-zinc-200/95">
           <li>• Azure, Windows Server, Linux</li>
-          <li>• Network: Routing, Switching, Firewall</li>
-          <li>• Monitoring & Automation</li>
+          <li>• Routing, Switching, Firewall</li>
+          <li>• Monitoring, Automation, Scripting</li>
         </ul>
       </div>
     </section>
   </main>
 
-  <footer class="border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-zinc-500">
-      © <span id="year"></span> Berkin Yıldız
+  <footer class="border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-zinc-400">
+      © <span id="year"></span> Berkin Yıldız — <span class="text-zinc-500">Synthwave edition</span>
     </div>
   </footer>
 
   <script>
-    // küçük yardımcılar; i18n bir sonraki adımda gelecek
+    // yıl
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // placeholder: dil butonları görsel geri bildirim için
+    // dil butonları (şimdilik görsel feedback) — i18n bir sonraki adımda
     const setLang = (lang) => {
       document.documentElement.lang = lang;
-      document.getElementById("btn-tr").classList.toggle("bg-accent", lang==="tr");
-      document.getElementById("btn-en").classList.toggle("bg-accent", lang==="en");
+      const tr = document.getElementById("btn-tr");
+      const en = document.getElementById("btn-en");
+      tr.classList.toggle("bg-neon/20", lang==="tr");
+      tr.classList.toggle("border-neon/40", lang==="tr");
+      en.classList.toggle("bg-magenta/20", lang==="en");
+      en.classList.toggle("border-magenta/40", lang==="en");
     };
     document.getElementById("btn-tr").onclick = () => setLang("tr");
     document.getElementById("btn-en").onclick = () => setLang("en");
@@ -95,4 +136,3 @@
   </script>
 </body>
 </html>
-
