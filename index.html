@@ -2,64 +2,97 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Berkin Yıldız - CV</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-      color: #333;
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berkin Yıldız — IT Infrastructure & Network</title>
+  <meta name="description" content="IT Infrastructure & Network Specialist. Azure, Windows Server, Linux, Network & Security." />
+
+  <!-- Tailwind (CDN; hız için sonra build’e geçebiliriz) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Basit accent renk ayarı -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { accent: "#1E40FF" }
+        }
+      }
     }
-    header {
-      background: #222;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    main {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      border-radius: 8px;
-    }
-    h1 {
-      margin-top: 0;
-    }
-    footer {
-      text-align: center;
-      padding: 10px;
-      background: #222;
-      color: #fff;
-      margin-top: 20px;
-    }
-  </style>
+  </script>
 </head>
-<body>
-  <header>
-    <h1>Berkin Yıldız</h1>
-    <p>IT Infrastructure & Network Specialist</p>
+<body class="bg-zinc-950 text-zinc-100 antialiased">
+  <!-- Header -->
+  <header class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+    <a href="#" class="font-semibold tracking-tight text-zinc-200">Berkin Yıldız</a>
+
+    <!-- Dil seçici (bir sonraki adımda i18n bağlayacağız) -->
+    <div class="flex items-center gap-2 text-sm">
+      <button id="btn-tr" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700">TR</button>
+      <button id="btn-en" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700">EN</button>
+    </div>
   </header>
-  <main>
-    <h2>Hakkımda</h2>
-    <p>Ben Berkin, altyapı ve network alanında uzmanlaşmakta olan bir IT profesyoneliyim. Azure, Windows Server, Linux ve ağ güvenliği üzerine çalışmalar yapıyorum.</p>
-    
-    <h2>Deneyim</h2>
-    <ul>
-      <li><strong>Bank of China Turkey</strong> - IT Infrastructure & Network Specialist (2025 - ...)</li>
-      <li>Önceki görevler: IT Operator, Helpdesk & Operations</li>
-    </ul>
-    
-    <h2>Eğitim</h2>
-    <p>+ Sertifikalar (CCNA, ITIL, vs.)</p>
-    
-    <h2>İletişim</h2>
-    <p><a href="mailto:yildizberkin98@egmail.com">yildizberkin98@gmail.com</a></p>
+
+  <!-- Hero -->
+  <main class="max-w-6xl mx-auto px-4 pt-14 pb-20">
+    <section class="grid md:grid-cols-2 items-center gap-10">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
+          <span id="hero-title">IT Infrastructure & Network Specialist</span>
+        </h1>
+        <p id="hero-tag" class="mt-4 text-zinc-400 max-w-prose">
+          Azure, Windows Server, Linux, ağ ve güvenlik alanlarında çalışıyorum. Sistemleri sade, güvenli ve
+          sürdürülebilir kılmaya odaklanıyorum.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <!-- CV’yi görüntüle -->
+          <a id="btn-view-cv"
+             href="/assets/cv/berkin-yildiz-cv.pdf"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent text-white hover:opacity-90">
+             CV’yi Görüntüle
+          </a>
+
+          <!-- PDF indir -->
+          <a id="btn-download-cv"
+             href="/assets/cv/berkin-yildiz-cv.pdf" download
+             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700">
+             PDF İndir
+          </a>
+        </div>
+      </div>
+
+      <!-- Sağ tarafta basit bir kart -->
+      <div class="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6">
+        <ul class="space-y-3 text-zinc-300">
+          <li>• Azure, Windows Server, Linux</li>
+          <li>• Network: Routing, Switching, Firewall</li>
+          <li>• Monitoring & Automation</li>
+        </ul>
+      </div>
+    </section>
   </main>
-  <footer>
-    <p>© 2025 Berkin Yıldız</p>
+
+  <footer class="border-t border-zinc-800">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-zinc-500">
+      © <span id="year"></span> Berkin Yıldız
+    </div>
   </footer>
+
+  <script>
+    // küçük yardımcılar; i18n bir sonraki adımda gelecek
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // placeholder: dil butonları görsel geri bildirim için
+    const setLang = (lang) => {
+      document.documentElement.lang = lang;
+      document.getElementById("btn-tr").classList.toggle("bg-accent", lang==="tr");
+      document.getElementById("btn-en").classList.toggle("bg-accent", lang==="en");
+    };
+    document.getElementById("btn-tr").onclick = () => setLang("tr");
+    document.getElementById("btn-en").onclick = () => setLang("en");
+    setLang("tr");
+  </script>
 </body>
 </html>
+
