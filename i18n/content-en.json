@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "IT Infrastructure & Network Specialist",
-    "tag": "I work on Azure, Windows Server, Linux, and network security. My focus is making systems secure, scalable, and sustainable."
+    "tag": "I work on Azure, Windows Server, Linux and network security. I focus on making systems secure, scalable and sustainable."
   },
   "cta": {
     "view": "View CV",
@@ -9,7 +9,11 @@
   },
   "card": {
     "stack": "Core Stack",
-    "items": ["Azure, Windows Server, Linux", "Routing, Switching, Firewall", "Monitoring, Automation, Scripting"]
+    "items": [
+      "• Azure, Windows Server, Linux",
+      "• Routing, Switching, Firewall",
+      "• Monitoring, Automation, Scripting"
+    ]
   },
   "footer": "Synthwave edition"
 }
