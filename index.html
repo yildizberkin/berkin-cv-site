@@ -45,9 +45,58 @@
       50% { opacity: .9;  transform: translateY(-6px); }
       100%{ opacity: .55; transform: translateY(0); }
     }
+
+    /* INTRO OVERLAY */
+    #intro {
+      position: fixed; inset: 0; z-index: 9999;
+      display: grid; place-items: center;
+      background: radial-gradient(1200px 700px at 80% -20%, #ff2ea622, transparent 60%),
+                  radial-gradient(1000px 600px at -10% 120%, #00ffd122, transparent 60%),
+                  #090314;
+      transition: opacity .8s ease, visibility .8s ease;
+    }
+    #intro.hidden { opacity: 0; visibility: hidden; }
+    #intro .layer { position: absolute; inset: 0; }
+    #intro-canvas { width: 100%; height: 100%; display: block; opacity:.95; }
+    #intro-center {
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      mix-blend-mode: screen; text-align:center; pointer-events:none;
+    }
+    .glow {
+      color:#00ffd1; text-shadow:0 0 8px #00ffd1, 0 0 18px #00ffd1;
+      font-family: 'Audiowide', system-ui; letter-spacing: .15em;
+    }
+    .access {
+      font-size: clamp(28px, 4vw, 48px);
+      opacity:0; transform: translateY(8px) scale(.98);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .access.on { opacity:1; transform: translateY(0) scale(1); }
+    .flicker { animation: flicker 1s steps(10) 3; }
+    @keyframes flicker { 50% { opacity:.2 } }
+    #skip {
+      position: absolute; right:16px; top:16px; z-index:2;
+      padding:8px 12px; border-radius:10px; border:1px solid #ffffff22;
+      background:#ffffff10; color:#e5e7eb; font-size:12px; cursor:pointer;
+      backdrop-filter: blur(6px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #intro { transition:none }
+      .access { transition:none }
+    }
   </style>
 </head>
 <body class="bg-midnight text-zinc-100 antialiased font-sans">
+
+  <!-- INTRO OVERLAY -->
+  <div id="intro" aria-hidden="true">
+    <button id="skip">Skip ⏭</button>
+    <canvas id="intro-canvas" class="layer"></canvas>
+    <div id="intro-center" class="layer">
+      <div class="glow" style="font-size:clamp(14px,2vw,18px); opacity:.8;">INITIALIZING SECURE NETWORK…</div>
+      <div id="access" class="glow access">ACCESS GRANTED</div>
+    </div>
+  </div>
 
   <!-- arka plan: synth gradient + grid -->
   <div class="fixed inset-0 -z-10">
@@ -118,6 +167,111 @@
       © <span id="year"></span> Berkin Yıldız — <span data-i18n="footer" class="text-zinc-500">Synthwave edition</span>
     </div>
   </footer>
+
+  <!-- INTRO SCRIPT -->
+  <script>
+  (() => {
+    const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const intro = document.getElementById('intro');
+    const access = document.getElementById('access');
+    const skipBtn = document.getElementById('skip');
+    const canvas = document.getElementById('intro-canvas');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let W, H, nodes = [], edges = [], packets = [], t = 0, raf;
+
+    function size() {
+      W = canvas.width  = Math.floor(window.devicePixelRatio * canvas.clientWidth);
+      H = canvas.height = Math.floor(window.devicePixelRatio * canvas.clientHeight);
+      ctx.setTransform(1,0,0,1,0,0);
+    }
+    window.addEventListener('resize', size, { passive:true }); size();
+
+    function initGraph() {
+      const cols = 6, rows = 4;
+      const padX = W*0.12, padY = H*0.18;
+      nodes = [];
+      for (let r=0; r<rows; r++) {
+        for (let c=0; c<cols; c++) {
+          const x = padX + c*((W-2*padX)/(cols-1)) + (Math.random()-0.5)*20;
+          const y = padY + r*((H-2*padY)/(rows-1)) + (Math.random()-0.5)*20;
+          nodes.push({x,y});
+        }
+      }
+      edges = [];
+      const idx = (c,r)=> r*cols+c;
+      for (let r=0;r<rows;r++){
+        for (let c=0;c<cols;c++){
+          if (c<cols-1) edges.push([idx(c,r), idx(c+1,r)]);
+          if (r<rows-1) edges.push([idx(c,r), idx(c,r+1)]);
+        }
+      }
+      for (let i=0; i<8; i++){
+        const a = Math.floor(Math.random()*nodes.length);
+        const b = Math.floor(Math.random()*nodes.length);
+        if (a!==b) edges.push([a,b]);
+      }
+      packets = edges.slice(0, Math.min(22, edges.length)).map((e,i)=>({
+        e, u: Math.random(), dir: Math.random()<.5?1:-1, speed: .006 + Math.random()*.01,
+        hue: i%2? 310:168
+      }));
+    }
+
+    function lerp(a,b,u){ return a + (b-a)*u; }
+
+    function draw() {
+      ctx.clearRect(0,0,W,H);
+
+      ctx.lineWidth = Math.max(1, W/800);
+      for (const [aIdx,bIdx] of edges){
+        const a = nodes[aIdx], b = nodes[bIdx];
+        const grd = ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+        grd.addColorStop(0,'#ffffff0f'); grd.addColorStop(1,'#ffffff06');
+        ctx.strokeStyle = grd;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+
+      for (const n of nodes){
+        ctx.beginPath(); ctx.fillStyle = '#ffffff14';
+        ctx.arc(n.x, n.y, 3, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle = '#00ffd10b';
+        ctx.arc(n.x, n.y, 8 + 3*Math.sin(t*.002 + n.x*0.01), 0, Math.PI*2); ctx.fill();
+      }
+
+      for (const p of packets){
+        const [ai, bi] = p.e;
+        const A = nodes[ai], B = nodes[bi];
+        p.u += p.speed * p.dir;
+        if (p.u>=1 || p.u<=0) { p.dir*=-1; p.u = Math.max(0, Math.min(1, p.u)); }
+        const x = lerp(A.x, B.x, p.u), y = lerp(A.y, B.y, p.u);
+        const grad = ctx.createRadialGradient(x,y,0, x,y, 10);
+        const c = `hsl(${p.hue} 100% 60%)`;
+        grad.addColorStop(0, c); grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(x,y, 2.5, 0, Math.PI*2); ctx.fill();
+      }
+
+      t += 16; raf = requestAnimationFrame(draw);
+    }
+
+    function showAccessAndExit() {
+      access.classList.add('on','flicker');
+      setTimeout(()=> {
+        intro.classList.add('hidden');
+        cancelAnimationFrame(raf);
+      }, 900);
+    }
+
+    function start() {
+      if (prefersReduce) { intro.classList.add('hidden'); return; }
+      initGraph();
+      draw();
+      setTimeout(showAccessAndExit, 2400);
+    }
+
+    skipBtn.addEventListener('click', () => { intro.classList.add('hidden'); cancelAnimationFrame(raf); });
+    window.addEventListener('load', start);
+  })();
+  </script>
 
   <!-- i18n -->
   <script>
