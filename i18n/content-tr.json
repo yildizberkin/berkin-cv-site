@@ -1,0 +1,15 @@
+{
+  "hero": {
+    "title": "IT Altyapı & Network Uzmanı",
+    "tag": "Azure, Windows Server, Linux ve ağ güvenliği üzerine çalışıyorum. Sistemleri güvenli, ölçeklenebilir ve sürdürülebilir kılmaya odaklanıyorum."
+  },
+  "cta": {
+    "view": "CV’yi Görüntüle",
+    "download": "PDF İndir"
+  },
+  "card": {
+    "stack": "Temel Yığın",
+    "items": ["Azure, Windows Server, Linux", "Routing, Switching, Firewall", "Monitoring, Automation, Scripting"]
+  },
+  "footer": "Synthwave edition"
+}
