@@ -9,7 +9,11 @@
   },
   "card": {
     "stack": "Temel Yığın",
-    "items": ["Azure, Windows Server, Linux", "Routing, Switching, Firewall", "Monitoring, Automation, Scripting"]
+    "items": [
+      "• Azure, Windows Server, Linux",
+      "• Routing, Switching, Firewall",
+      "• Monitoring, Automation, Scripting"
+    ]
   },
   "footer": "Synthwave edition"
 }
