@@ -1,0 +1,21 @@
+name: Deploy to Azure Web App
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Zip site
+        run: zip -r site.zip .
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: berkin-cv-app
+          package: site.zip
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
