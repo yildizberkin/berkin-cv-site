@@ -1,21 +1,23 @@
-name: Deploy to Azure Web App
+name: Deploy to Cloudflare Workers
+
 on:
+  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Zip site
-        run: zip -r site.zip .
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          app-name: berkin-cv-app
-          package: site.zip
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
