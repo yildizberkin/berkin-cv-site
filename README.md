@@ -42,3 +42,13 @@ The included workflow deploys `main` after these repository secrets are configur
 ## Privacy
 
 The public site does not expose a phone number, email destination, credential IDs, employer infrastructure identifiers, addresses, IPs or internal topology details.
+
+## Content admin (feature branch)
+
+The private `/admin` control plane stores notes and certifications in D1. It is disabled by default and fails closed until both controls are configured:
+
+1. Protect `/admin*` and `/api/admin*` with a Cloudflare Access self-hosted application.
+2. Store the one allowed identity as a Worker secret with `npx wrangler secret put ADMIN_EMAIL`.
+3. Apply the content migration with `npx wrangler d1 migrations apply berkin-portfolio-contact --remote`.
+
+Never rely on the application header check without the Cloudflare Access policy in front of it.
