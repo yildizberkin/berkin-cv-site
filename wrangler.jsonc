@@ -10,7 +10,7 @@
     {
       "binding": "DB",
       "database_name": "berkin-portfolio-contact",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "c4ada6b3-edcb-466d-b3e1-a203f072aa03",
       "migrations_dir": "drizzle"
     }
   ]
